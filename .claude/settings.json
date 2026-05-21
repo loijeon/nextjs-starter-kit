@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "mcp__playwright",
+      "mcp__context7",
+      "mcp__notion",
+      "Skill(update-config)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "context7",
+    "notion",
+    "playwright"
+  ],
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "powershell",
+            "command": "$json=[Console]::In.ReadToEnd()|ConvertFrom-Json;$f=$json.tool_response.filePath??$json.tool_input.file_path;if($f){npx prettier --write $f 2>$null};exit 0",
+            "statusMessage": "파일 포멧팅 중..."
+          }
+        ]
+      }
+    ]
+  }
+}
